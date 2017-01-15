@@ -2,8 +2,7 @@ import cv2
 import numpy as np
 
 #Creates video capture object from camera
-vid = cv2.VideoCapture(0)
-vid.set(10,.05)
+vid = cv2.VideoCapture(1)
 
 #X and Y coordinates of mouseclick
 coX, coY = 0,0
@@ -17,7 +16,7 @@ def printpix(event,x,y, flags, params):
     global coX, coY, px
     if event == cv2.EVENT_LBUTTONDBLCLK:
         coX, coY = x, y
-        px = frame[coX, coY]
+        px = frame[coY, coX]
 
 #Sets printpix function frame titled 'orig'
 cv2.namedWindow('orig')
@@ -32,11 +31,11 @@ upper_green = np.array([100,75,40])
 
 while(True):
     ret, frame = vid.read()
-    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    mask = cv2.inRange(hsv, lower_green, upper_green)
-    res = cv2.bitwise_and(frame,frame,mask=mask)
+    #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    #mask = cv2.inRange(hsv, lower_green, upper_green)
+    #res = cv2.bitwise_and(frame,frame,mask=mask)
     cv2.imshow('orig',frame)
-    cv2.imshow('fff',res)
+    #cv2.imshow('fff',res)
     #if 'a' key is pressed BGR values are printed. If 'q' is pressed while loop breaks
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
