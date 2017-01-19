@@ -10,7 +10,8 @@ vid = cv2.VideoCapture(1)
 time.sleep(1)
 
 # os.system("/scripts/turnonautoexposure.sh")
-os.system("scripts/turnoffautoexposure.sh")
+# os.system("scripts/turnoffautoexposure.sh")
+os.system("scripts/configure.sh")
 # os.system("scripts/all.sh")
 
 socket = UDPCannon("10.0.11.67", 8090)
@@ -29,8 +30,8 @@ cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
 # Calibrated HSV Ranges
-lower_green = np.array([0, 0, 230])
-upper_green = np.array([255, 255, 255])
+lower_green = np.array([50, 245, 65])
+upper_green = np.array([75, 260, 110])
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Starts video capture
@@ -70,7 +71,10 @@ while (True):
         print center
         img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
         # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
-        socket.put("centerX", str(center))
+        try:
+            socket.put("centerX", str(center))
+        except:
+            print "Can't connect"
 
     cv2.imshow('orig', frame)
     cv2.imshow('fff', res)
