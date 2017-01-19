@@ -64,17 +64,20 @@ while (True):
         # cv2.drawContours(frame, [box], 0, (0, 0, 255), 3)
         # calculate center and radius of minimum enclosing circle
         (x, y), radius = cv2.minEnclosingCircle(c)
-        # cast to integers
-        center = (int(x), int(y))
-        radius = int(radius)
-        # draw the circle
-        print center
-        img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
-        # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
-        try:
-            socket.put("centerX", str(center))
-        except:
-            print "Can't connect"
+
+        if (radius >20):
+
+            # cast to integers
+            center = (int(x), int(y))
+            radius = int(radius)
+            # draw the circle
+            print center
+            img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+            # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
+            try:
+                socket.put("centerX", str(center))
+            except:
+                print "Can't connect"
 
     cv2.imshow('orig', frame)
     cv2.imshow('fff', res)
