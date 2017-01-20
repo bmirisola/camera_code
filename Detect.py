@@ -1,9 +1,10 @@
+import numpy as np
 import os
 import time
 
 import cv2
-import numpy as np
 
+import Distance
 from UDPCannon import UDPCannon
 
 vid = cv2.VideoCapture(1)
@@ -30,8 +31,8 @@ cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
 # Calibrated HSV Ranges
-lower_green = np.array([50, 245, 65])
-upper_green = np.array([75, 260, 110])
+lower_green = np.array([60, 245, 100])
+upper_green = np.array([85, 255, 120])
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Starts video capture
@@ -65,19 +66,20 @@ while (True):
         # calculate center and radius of minimum enclosing circle
         (x, y), radius = cv2.minEnclosingCircle(c)
 
-        if (radius >20):
+        # if (radius > 20):
 
-            # cast to integers
-            center = (int(x), int(y))
-            radius = int(radius)
-            # draw the circle
-            print center
-            img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
-            # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
-            try:
-                socket.put("centerX", str(center))
-            except:
-                print "Can't connect"
+        # cast to integers
+        center = (int(x), int(y))
+        radius = int(radius)
+        print Distance.find_distance(607.648351648, 11.375, radius * 2)
+        # draw the circle
+        # print center
+        img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
+        try:
+            socket.put("centerX", str(center))
+        except:
+            print "Can't connect"
 
     cv2.imshow('orig', frame)
     cv2.imshow('fff', res)

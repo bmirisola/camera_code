@@ -1,8 +1,10 @@
-import cv2
-import numpy as np
+# 11 3/8 inches 11.375 inches
+def focal_length(pixel, width, distance):
+    return (pixel * distance) / width
 
-def focal_length(image, width, distance):
-    return (image * distance)/width
 
-def distance(focalLength, width, image):
-    return (focalLength* width)/ image
+# focal length = 607.648351648
+
+
+def find_distance(focal_length, width, pixel):
+    return (focal_length * width) / pixel
