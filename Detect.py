@@ -30,11 +30,19 @@ def printpix(event, x, y, flags, params):
 cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
+Matrix = [[0 for x in range(640)] for y in range(480)]
 # Calibrated HSV Ranges
-lower_green = np.array([60, 245, 100])
-upper_green = np.array([85, 255, 120])
-font = cv2.FONT_HERSHEY_SIMPLEX
+# lower_green = np.array([60, 240, 90])
+# upper_green = np.array([65, 255, 120])
 
+lower_green = np.array([60, 0, 30])
+upper_green = np.array([80, 255, 60])
+
+lower_blue = np.array([0, 0, 0])
+upper_blue = np.array([59, 0, 0])
+
+font = cv2.FONT_HERSHEY_SIMPLEX
+distance = 0
 # Starts video capture
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
 
@@ -66,23 +74,27 @@ while (True):
         # calculate center and radius of minimum enclosing circle
         (x, y), radius = cv2.minEnclosingCircle(c)
 
-        # if (radius > 20):
-
-        # cast to integers
-        center = (int(x), int(y))
-        radius = int(radius)
-        print Distance.find_distance(607.648351648, 11.375, radius * 2)
-        # draw the circle
-        # print center
-        img = cv2.circle(frame, center, radius, (0, 255, 0), 2)
-        # cv2.drawContours(img, contours, -1, (255, 0, 0), 1)
-        try:
-            socket.put("centerX", str(center))
-        except:
-            print "Can't connect"
+        epsilon = 0.1 * cv2.arcLength(c, True)
+        print float(cv2.arcLength(c, True))
+        approx = cv2.approxPolyDP(c, epsilon, True)
+        if (radius > 20):
+            # cast to integers
+            center = (int(x), int(y))
+            radius = int(radius)
+            distance = Distance.find_distance(607.648351648, 11.375, radius * 2)
+            # draw the circle
+            # print center
+            print distance
+            frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+            cv2.drawContours(frame, approx, -1, (0, 0, 255), 1)
+            try:
+                socket.put("centerX", str(center))
+            except:
+                print "Can't connect"
 
     cv2.imshow('orig', frame)
-    cv2.imshow('fff', res)
+    cv2.putText(frame, (str)(distance), (0, 0), font, 1, (255, 0, 0), 1)
+    cv2.imshow('res', res)
     cv2.imshow("hsv", hsv)
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
