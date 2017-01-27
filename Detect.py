@@ -30,16 +30,12 @@ def printpix(event, x, y, flags, params):
 cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
-Matrix = [[0 for x in range(640)] for y in range(480)]
 # Calibrated HSV Ranges
 # lower_green = np.array([60, 240, 90])
 # upper_green = np.array([65, 255, 120])
 
-lower_green = np.array([60, 0, 30])
-upper_green = np.array([80, 255, 60])
-
-lower_blue = np.array([0, 0, 0])
-upper_blue = np.array([59, 0, 0])
+lower_green = np.array([50, 100, 10])
+upper_green = np.array([80, 210, 30])
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 distance = 0
@@ -74,23 +70,20 @@ while (True):
         # calculate center and radius of minimum enclosing circle
         (x, y), radius = cv2.minEnclosingCircle(c)
 
-        epsilon = 0.1 * cv2.arcLength(c, True)
-        print float(cv2.arcLength(c, True))
-        approx = cv2.approxPolyDP(c, epsilon, True)
-        if (radius > 20):
-            # cast to integers
-            center = (int(x), int(y))
-            radius = int(radius)
-            distance = Distance.find_distance(607.648351648, 11.375, radius * 2)
-            # draw the circle
-            # print center
-            print distance
-            frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
-            cv2.drawContours(frame, approx, -1, (0, 0, 255), 1)
-            try:
-                socket.put("centerX", str(center))
-            except:
-                print "Can't connect"
+        # cast to integers
+        center = (int(x), int(y))
+        radius = int(radius)
+        distance = Distance.find_distance(607.648351648, 11.375, radius * 2)
+        meters = distance * 0.0254
+        # draw the circle
+        # print center
+        # print 'meters are: ' + str(meters)
+        frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        try:
+            socket.put("centerX", str(center))
+            socket.put("distanceMeters", str(meters))
+        except Exception as e:
+            print "Can't connect : {0}".format(e)
 
     cv2.imshow('orig', frame)
     cv2.putText(frame, (str)(distance), (0, 0), font, 1, (255, 0, 0), 1)
