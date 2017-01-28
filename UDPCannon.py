@@ -1,5 +1,4 @@
 import socket
-import sys
 
 
 class UDPCannon:
@@ -34,5 +33,5 @@ class UDPCannon:
 ||||||||
         """.format(message)
 
-        print "Packet size: " + str(sys.getsizeof(message))
+        # print "Packet size: " + str(sys.getsizeof(message))
         self.socket.sendto(str(message), (self.client_address, self.client_port))

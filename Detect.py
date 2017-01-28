@@ -4,6 +4,7 @@ import time
 
 import cv2
 
+import Constants
 import Distance
 from UDPCannon import UDPCannon
 
@@ -34,7 +35,7 @@ cv2.setMouseCallback('hsv', printpix)
 # lower_green = np.array([60, 240, 90])
 # upper_green = np.array([65, 255, 120])
 
-lower_green = np.array([50, 100, 10])
+lower_green = np.array([Constants.lower_blue, 0, 10])
 upper_green = np.array([80, 210, 30])
 
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -59,6 +60,7 @@ while (True):
 
     im2, contours, hierarchy = cv2.findContours(mask, 2, 1)
     for c in contours:
+
         # find minimum area
         # rect = cv2.minAreaRect(c)
         # calculate coordinates of the minimum area rectangle
@@ -79,6 +81,9 @@ while (True):
         # print center
         # print 'meters are: ' + str(meters)
         frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        epsilon = cv2.arcLength(c, True)
+        approx = cv2.approxPolyDP(c, epsilon, True)
+        # frame = cv2.drawContours(frame, approx, 0, (0, 0, 255), 3)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
