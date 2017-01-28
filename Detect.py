@@ -8,7 +8,7 @@ import Constants
 import Distance
 from UDPCannon import UDPCannon
 
-vid = cv2.VideoCapture(1)
+vid = cv2.VideoCapture(Constants.camera_port)
 time.sleep(1)
 
 # os.system("/scripts/turnonautoexposure.sh")
@@ -35,8 +35,9 @@ cv2.setMouseCallback('hsv', printpix)
 # lower_green = np.array([60, 240, 90])
 # upper_green = np.array([65, 255, 120])
 
-lower_green = np.array([Constants.lower_blue, 0, 10])
-upper_green = np.array([80, 210, 30])
+# BGR
+lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_red])
+upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 distance = 0
@@ -75,7 +76,7 @@ while (True):
         # cast to integers
         center = (int(x), int(y))
         radius = int(radius)
-        distance = Distance.find_distance(607.648351648, 11.375, radius * 2)
+        distance = Distance.find_distance(Constants.focal_length, Constants.tape_width, radius * 2)
         meters = distance * 0.0254
         # draw the circle
         # print center

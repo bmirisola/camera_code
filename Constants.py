@@ -6,3 +6,4 @@ upper_green = 210
 upper_red = 30
 focal_length = 607.648351648
 camera_port = 1
+tape_width = 11.375
