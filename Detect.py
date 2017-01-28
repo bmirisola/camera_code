@@ -1,9 +1,7 @@
 import numpy as np
 import os
 import time
-
 import cv2
-
 import Constants
 import Distance
 from UDPCannon import UDPCannon
@@ -81,10 +79,10 @@ while (True):
         # draw the circle
         # print center
         # print 'meters are: ' + str(meters)
-        frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
-        epsilon = cv2.arcLength(c, True)
+        #frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        epsilon = 0.01 * cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, epsilon, True)
-        # frame = cv2.drawContours(frame, approx, 0, (0, 0, 255), 3)
+        frame = cv2.drawContours(frame, approx, 0, (0, 0, 255), 3)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
