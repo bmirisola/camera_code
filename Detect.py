@@ -1,7 +1,9 @@
 import numpy as np
 import os
 import time
+
 import cv2
+
 import Constants
 import Distance
 from UDPCannon import UDPCannon
@@ -15,7 +17,7 @@ os.system("scripts/configure.sh")
 # os.system("scripts/all.sh")
 
 socket = UDPCannon("10.0.11.67", 8090)
-
+tape_contour = []
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -59,15 +61,14 @@ while (True):
 
     im2, contours, hierarchy = cv2.findContours(mask, 2, 1)
     for c in contours:
-
         # find minimum area
-        # rect = cv2.minAreaRect(c)
+        rect = cv2.minAreaRect(c)
         # calculate coordinates of the minimum area rectangle
-        # box = cv2.boxPoints(rect)
+        box = cv2.boxPoints(rect)
         # normalize coordinates to integers
-        # box = np.int0(box)
+        box = np.int0(box)
         # draw contours
-        # cv2.drawContours(frame, [box], 0, (0, 0, 255), 3)
+        #cv2.drawContours(frame, [box], 0, (0, 0, 255), 3)
         # calculate center and radius of minimum enclosing circle
         (x, y), radius = cv2.minEnclosingCircle(c)
 
@@ -79,10 +80,14 @@ while (True):
         # draw the circle
         # print center
         # print 'meters are: ' + str(meters)
-        #frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
         epsilon = 0.01 * cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, epsilon, True)
-        frame = cv2.drawContours(frame, approx, 0, (0, 0, 255), 3)
+        print(len(c))
+        if len(approx < 500) and len(approx > 70):
+            tape_contour.append(approx)
+
+        frame = cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 3)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
