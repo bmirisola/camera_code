@@ -11,10 +11,7 @@ from UDPCannon import UDPCannon
 vid = cv2.VideoCapture(Constants.camera_port)
 time.sleep(1)
 
-# os.system("/scripts/turnonautoexposure.sh")
-# os.system("scripts/turnoffautoexposure.sh")
 os.system("scripts/configure.sh")
-# os.system("scripts/all.sh")
 
 socket = UDPCannon("10.0.11.67", 8090)
 tape_contour = []
@@ -32,14 +29,13 @@ cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
 # Calibrated HSV Ranges
-# lower_green = np.array([60, 240, 90])
-# upper_green = np.array([65, 255, 120])
+lower_green = np.array([50, 250, 30])
+upper_green = np.array([65, 255, 60])
 
 # BGR
-lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_red])
-upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
+# lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_red])
+# upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
 
-font = cv2.FONT_HERSHEY_SIMPLEX
 distance = 0
 # Starts video capture
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
@@ -80,14 +76,15 @@ while (True):
         # draw the circle
         # print center
         # print 'meters are: ' + str(meters)
-        frame = cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        cv2.circle(frame, center, radius, (0, 255, 0), 2)
         epsilon = 0.01 * cv2.arcLength(c, True)
         approx = cv2.approxPolyDP(c, epsilon, True)
-        print(len(c))
-        if len(approx < 500) and len(approx > 70):
+        # print(len(c))
+        if len(approx) >4:
             tape_contour.append(approx)
 
-        frame = cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 3)
+        if tape_contour:
+            cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 1)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
@@ -95,7 +92,7 @@ while (True):
             print "Can't connect : {0}".format(e)
 
     cv2.imshow('orig', frame)
-    cv2.putText(frame, (str)(distance), (0, 0), font, 1, (255, 0, 0), 1)
+    cv2.imshow('mask', mask)
     cv2.imshow('res', res)
     cv2.imshow("hsv", hsv)
     k = cv2.waitKey(20) & 0xFF
