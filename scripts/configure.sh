@@ -12,6 +12,6 @@ v4l2-ctl -d /dev/video1 --set-ctrl=exposure_absolute=1
 v4l2-ctl -d /dev/video1 --set-ctrl=focus_auto=0
 v4l2-ctl -d /dev/video1 --set-ctrl=focus_absolute=0
 #v4l2-ctl -d /dev/video1 --set-ctrl=power_line_frequency=2
-#v4l2-ctl -d /dev/video1 --set-ctrl=led1_mode=3
+v4l2-ctl -d /dev/video1 --set-ctrl=led1_mode=0
 #v4l2-ctl -d /dev/video1 --set-ctrl=led1_frequency=0
 

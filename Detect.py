@@ -29,12 +29,12 @@ cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
 
 # Calibrated HSV Ranges
-lower_green = np.array([50, 250, 30])
-upper_green = np.array([65, 255, 60])
+# lower_green = np.array([50, 250, 30])
+# upper_green = np.array([65, 255, 60])
 
 # BGR
-# lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_red])
-# upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
+lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_red])
+upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
 
 distance = 0
 # Starts video capture
@@ -55,7 +55,9 @@ while (True):
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 4)
     '''
 
-    im2, contours, hierarchy = cv2.findContours(mask, 2, 1)
+    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+
     for c in contours:
         # find minimum area
         rect = cv2.minAreaRect(c)
@@ -76,15 +78,18 @@ while (True):
         # draw the circle
         # print center
         # print 'meters are: ' + str(meters)
-        cv2.circle(frame, center, radius, (0, 255, 0), 2)
-        epsilon = 0.01 * cv2.arcLength(c, True)
+        epsilon = 0.000001 * cv2.arcLength(c, True)
+        #epsilon = 0.000001
         approx = cv2.approxPolyDP(c, epsilon, True)
-        # print(len(c))
-        if len(approx) >4:
+        cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        # print "c is: " + str(contours[0])
+        # print "tape contour = " + str(tape_contour)
+        print "Approx :" + str(approx)
+        if len(approx) > 4:
             tape_contour.append(approx)
 
-        if tape_contour:
-            cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 1)
+        for x in range(0, len(tape_contour)):
+            cv2.drawContours(frame, tape_contour, 0, (0, 0, 255),2)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
@@ -95,6 +100,7 @@ while (True):
     cv2.imshow('mask', mask)
     cv2.imshow('res', res)
     cv2.imshow("hsv", hsv)
+    tape_contour = []
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
         break
