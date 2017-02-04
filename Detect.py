@@ -15,6 +15,7 @@ os.system("scripts/configure.sh")
 
 socket = UDPCannon("10.0.11.67", 8090)
 tape_contour = []
+not_ring = False
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -81,15 +82,17 @@ while (True):
         epsilon = 0.000001 * cv2.arcLength(c, True)
         #epsilon = 0.000001
         approx = cv2.approxPolyDP(c, epsilon, True)
-        cv2.circle(frame, center, radius, (0, 255, 0), 2)
+        print (len(approx))
         # print "c is: " + str(contours[0])
         # print "tape contour = " + str(tape_contour)
-        print "Approx :" + str(approx)
+        # print "Approx :" + str(approx)
         if len(approx) > 4:
             tape_contour.append(approx)
-
-        for x in range(0, len(tape_contour)):
-            cv2.drawContours(frame, tape_contour, 0, (0, 0, 255),2)
+            not_ring = True
+        if (not_ring):
+            for x in range(0, len(tape_contour)):
+                cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 2)
+                cv2.circle(frame, center, radius, (0, 255, 0), 2)
         try:
             socket.put("centerX", str(center))
             socket.put("distanceMeters", str(meters))
