@@ -22,7 +22,6 @@ def printpix(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDBLCLK:
         print hsv[y, x]
 
-
 # Sets printpix function frame titled 'orig'
 cv2.namedWindow('hsv')
 cv2.setMouseCallback('hsv', printpix)
@@ -56,8 +55,10 @@ while (True):
         (x, y, w, h) = cv2.boundingRect(cnt)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 4)
     '''
-    bottom_tape.run()
-    top_tape.run()
+    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    bottom_tape.run(contours)
+    top_tape.run(contours)
+    print 'hi'
 
     try:
         socket.put("centerX", str(bottom_tape.center))

@@ -18,11 +18,8 @@ class Polygon:
         polygon = Polygon(frame, mask)
         return polygon
 
+    def run(self, contours):
 
-    def run(self):
-
-        # global contours, tape_contour, frame, mask
-        im2, contours, hierarchy = cv2.findContours(self.mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         for c in contours:
             (x, y), radius = cv2.minEnclosingCircle(c)
 
@@ -43,3 +40,4 @@ class Polygon:
                 for x in range(0, len(self.tape_contour)):
                     cv2.drawContours(self.frame, self.tape_contour, 0, (0, 0, 255), 2)
                     cv2.circle(self.frame, center, radius, (0, 255, 0), 2)
+        self.tape_contour = []
