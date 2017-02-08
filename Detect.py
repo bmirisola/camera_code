@@ -4,8 +4,10 @@ import time
 
 import cv2
 
+global frame, mask
 import Constants
 import Distance
+import Polygon
 from UDPCannon import UDPCannon
 
 vid = cv2.VideoCapture(Constants.camera_port)
@@ -14,6 +16,9 @@ time.sleep(1)
 os.system("scripts/configure.sh")
 socket = UDPCannon("10.0.11.67", 8090)
 tape_contour = []
+
+bottom_tape = Polygon.Polygon.make_polygon(frame, mask)
+top_tape = Polygon.Polygon.make_polygon(frame, mask)
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -53,12 +58,12 @@ while (True):
         (x, y, w, h) = cv2.boundingRect(cnt)
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 4)
     '''
-
+    bottom_tape.run()
+    top_tape.run()
 
     im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-    M = 0
     for c in contours:
-        print M
+
         # find minimum area
         rect = cv2.minAreaRect(c)
         # calculate coordinates of the minimum area rectangle
@@ -79,13 +84,9 @@ while (True):
         # print center
         # print 'meters are: ' + str(meters)
         epsilon = 0.000001 * cv2.arcLength(c, True)
-        #epsilon = 0.000001
         approx = cv2.approxPolyDP(c, epsilon, True)
 
-        # print (len(approx))
-        # print "c is: " + str(contours[0])
-        # print "tape contour = " + str(tape_contour)
-        # print "Approx :" + str(approx)
+        print 'Approx is' + str(len(approx))
         if len(approx) > 4:
             tape_contour.append(approx)
 
@@ -94,7 +95,7 @@ while (True):
                 cv2.drawContours(frame, tape_contour, 0, (0, 0, 255), 2)
                 cv2.circle(frame, center, radius, (0, 255, 0), 2)
 
-        print len(tape_contour)
+        # print len(tape_contour)
 
         try:
             socket.put("centerX", str(center))
@@ -103,9 +104,9 @@ while (True):
             print "Can't connect : {0}".format(e)
 
     cv2.imshow('orig', frame)
-    cv2.imshow('mask', mask)
-    cv2.imshow('res', res)
-    cv2.imshow("hsv", hsv)
+    # cv2.imshow('mask', mask)
+    # cv2.imshow('res', res)
+    #cv2.imshow("hsv", hsv)
     tape_contour = []
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
