@@ -107,7 +107,7 @@ while (True):
             print "Can't connect : {0}".format(e)
 
     cv2.imshow('orig', frame)
-    #cv2.imshow('mask', mask)
+    # cv2.imshow('mask', mask)
     # cv2.imshow('res', res)
     #cv2.imshow("hsv", hsv)
     tape_contour = []
