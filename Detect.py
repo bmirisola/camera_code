@@ -65,13 +65,14 @@ while (True):
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 4)
     '''
 
-    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-
+    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     print 'Contour count is ' + str(len(contours))
+
     for c in contours:
 
         # find minimum area
         rect = cv2.minAreaRect(c)
+
         # calculate coordinates of the minimum area rectangle
         box = cv2.boxPoints(rect)
         # normalize coordinates to integers
@@ -94,12 +95,11 @@ while (True):
         if len(approx) > 4:
             tape_contour.append(approx)
 
-        if (len(tape_contour) > 0 and len(tape_contour) < 4):
+        if (len(tape_contour) > 0 and len(tape_contour) < 3):
             for x in range(0, len(tape_contour)):
                 cv2.drawContours(frame, tape_contour, -1, (0, 0, 255), 2)
                 cv2.circle(frame, center, radius, (0, 255, 0), 2)
-
-        # print len(tape_contour)
+                print(tape_contour[0])
 
         try:
             socket.put("centerX", str(center))
