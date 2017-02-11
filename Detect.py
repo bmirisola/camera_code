@@ -5,6 +5,7 @@ import time
 import cv2
 
 import Constants
+import Distance
 from Polygon import Polygon
 from UDPCannon import UDPCannon
 
@@ -29,7 +30,9 @@ hasRun = False
 # hold midpoint of two tapes
 center = []
 
+# holds distance value
 distance = 0
+meters = 0
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -84,6 +87,10 @@ while (True):
     print ('The center of top tape is ' + str(top_tape.center))
     print ('The center is ' + str(center))
 
+    # print Distance.focal_length(bottom_tape.radius,2,158)
+    # Finds horizontal distance
+    distance = Distance.find_distance(1659, 2, bottom_tape.radius)
+    print distance
     #Sends center over as a String array
     try:
         socket.put("centerX", str(center))
