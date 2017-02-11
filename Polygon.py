@@ -4,19 +4,14 @@ class Polygon:
     tape_contour = []
     mask = None
     frame = None
-    width = 0
-    length = 0
+    radius = 0
     ratio = 0
     center = []
-    temp = None
 
     def __init__(self, frame, mask):
         self.mask = mask
         self.frame = frame
         self.tape_contour = []
-
-    def __getitem__(self, item):
-        return item
 
     def run(self, contours):
 
