@@ -14,6 +14,7 @@ time.sleep(1)
 os.system("scripts/configure.sh")
 socket = UDPCannon("10.0.11.67", 8090)
 tape_contour = []
+hasRun = False
 
 # top_tape = Polygon(frame, mask)
 # bottom_tape = Polygon(frame, mask)
@@ -47,6 +48,7 @@ lower_green = np.array([Constants.low_blue, Constants.low_green, Constants.low_r
 upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.upper_red])
 center = []
 distance = 0
+
 # Starts video capture
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
 
@@ -75,8 +77,14 @@ while (True):
 
     if (len(contours) > 1):
         top_tape.run(contours[1])
+        hasRun = True
 
-    # center = int((top_tape.__getitem__(center) + bottom_tape.__getitem__(center[0]))/2), int((top_tape.__getitem__(center[1]) + bottom_tape.__getitem__(center[1]))/2)
+    if (hasRun):
+        top_tape.center = list(top_tape.center)
+        bottom_tape.center = list(bottom_tape.center)
+        center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
+            (top_tape.center[1] + bottom_tape.center[1]) / 2)
+        center = list(center)
 
     print ('The center of bottom tape is ' + str(bottom_tape.center))
     print ('The center of top tape is ' + str(top_tape.center))
@@ -124,6 +132,10 @@ while (True):
     # cv2.imshow('mask', mask)
     # cv2.imshow('res', res)
     #cv2.imshow("hsv", hsv)
+    hasRun = False
+    bottom_tape.center = []
+    top_tape.center = []
+    center = []
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
         break

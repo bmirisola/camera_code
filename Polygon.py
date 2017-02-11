@@ -39,6 +39,6 @@ class Polygon:
             for x in range(0, len(self.tape_contour)):
                 cv2.drawContours(self.frame, self.tape_contour, 0, (0, 0, 255), 2)
                 cv2.circle(self.frame, self.center, radius, (0, 255, 0), 2)
-                list(self.center)
-        list(self.center)
+
+        center = list(self.center)
         self.tape_contour = []
