@@ -76,8 +76,11 @@ while (True):
     if (len(contours) > 1):
         top_tape.run(contours[1])
 
+    # center = int((top_tape.__getitem__(center) + bottom_tape.__getitem__(center[0]))/2), int((top_tape.__getitem__(center[1]) + bottom_tape.__getitem__(center[1]))/2)
+
     print ('The center of bottom tape is ' + str(bottom_tape.center))
     print ('The center of top tape is ' + str(top_tape.center))
+    print ('The center is ' + str(center))
 
     '''
     for c in contours:

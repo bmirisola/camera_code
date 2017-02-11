@@ -1,6 +1,5 @@
 import cv2
 
-
 class Polygon:
     tape_contour = []
     mask = None
@@ -8,16 +7,16 @@ class Polygon:
     width = 0
     length = 0
     ratio = 0
-    center = None
+    center = []
+    temp = None
 
     def __init__(self, frame, mask):
         self.mask = mask
         self.frame = frame
         self.tape_contour = []
 
-    def make_polygon(self, frame, mask):
-        polygon = Polygon(frame, mask)
-        return polygon
+    def __getitem__(self, item):
+        return item
 
     def run(self, contours):
 
@@ -40,5 +39,6 @@ class Polygon:
             for x in range(0, len(self.tape_contour)):
                 cv2.drawContours(self.frame, self.tape_contour, 0, (0, 0, 255), 2)
                 cv2.circle(self.frame, self.center, radius, (0, 255, 0), 2)
-
+                list(self.center)
+        list(self.center)
         self.tape_contour = []
