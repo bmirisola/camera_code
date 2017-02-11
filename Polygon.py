@@ -22,7 +22,7 @@ class Polygon:
 
         # cast to integers
         self.center = (int(x), int(y))
-        radius = int(radius)
+        self.radius = int(radius)
 
         #Creates Polygon on a 0.001% error to contours
         epsilon = 0.000001 * cv2.arcLength(contours, True)
@@ -36,10 +36,10 @@ class Polygon:
         if (len(self.tape_contour) > 0 and len(self.tape_contour) < 2):
             for x in range(0, len(self.tape_contour)):
                 cv2.drawContours(self.frame, self.tape_contour, 0, (0, 0, 255), 2)
-                cv2.circle(self.frame, self.center, radius, (0, 255, 0), 2)
+                cv2.circle(self.frame, self.center, self.radius, (0, 255, 0), 2)
 
         #converts center to list from tuple
-        center = list(self.center)
+        self.center = list(self.center)
 
         #Clears polygons from tape contour array
         self.tape_contour = []
