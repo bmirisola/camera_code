@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import os
 import time
@@ -89,8 +90,9 @@ while (True):
 
     # print Distance.focal_length(bottom_tape.radius,2,158)
     # Finds horizontal distance
-    distance = Distance.find_distance(1659, 2, bottom_tape.radius)
-    print distance
+    HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
+    print HorizontalDistance
+    distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.BolierHeight, 2))
     #Sends center over as a String array
     try:
         socket.put("centerX", str(center))
