@@ -7,3 +7,4 @@ upper_red = 65
 focal_length = 607.648351648
 camera_port = 1
 tape_width = 11.375
+boiler_height = 79

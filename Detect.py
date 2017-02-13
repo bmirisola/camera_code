@@ -34,6 +34,7 @@ center = []
 # holds distance value
 distance = 0
 meters = 0
+angle = 0
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -92,10 +93,11 @@ while (True):
     # Finds horizontal distance
     HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
     print HorizontalDistance
-    distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.BolierHeight, 2))
+    distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
+    angle = math.atan2(Constants.boiler_height / distance)
     #Sends center over as a String array
     try:
-        socket.put("centerX", str(center))
+        socket.put("centerX", str(center) + '')
     except Exception as e:
         print "Can't connect : {0}".format(e)
 
