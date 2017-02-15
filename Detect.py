@@ -84,17 +84,17 @@ while (True):
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
-
-    print ('The center of bottom tape is ' + str(bottom_tape.center))
-    print ('The center of top tape is ' + str(top_tape.center))
-    print ('The center is ' + str(center))
+        HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
+        print HorizontalDistance
+        distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
+        angle = math.atan2(Constants.boiler_height / distance)
+        print ('The center of bottom tape is ' + str(bottom_tape.center))
+        print ('The center of top tape is ' + str(top_tape.center))
+        print ('The center is ' + str(center))
 
     # print Distance.focal_length(bottom_tape.radius,2,158)
     # Finds horizontal distance
-    HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
-    print HorizontalDistance
-    distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
-    angle = math.atan2(Constants.boiler_height / distance)
+
     #Sends center over as a String array
     try:
         socket.put("centerX", str(center) + '')
