@@ -1,3 +1,4 @@
 VENV
 *.pyc
 2017CameraCodeFoundations
+.idea/workspace.xml
