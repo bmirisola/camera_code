@@ -1,9 +1,9 @@
 import math
+import numpy as np
 import os
 import time
 
 import cv2
-import numpy as np
 
 import Constants
 import Distance
@@ -35,7 +35,6 @@ center = []
 distance = 0
 meters = 0
 angle = 0
-
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -98,6 +97,21 @@ while (True):
     angle = math.atan2(Constants.boiler_height / distance)
 
     # Sends center over as a String array
+        HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
+        # print HorizontalDistance
+        distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
+        angle_rads = math.atan(Constants.boiler_height / distance)
+        angle_deg = math.degrees(angle_rads)
+        # print ('The center of bottom tape is ' + str(bottom_tape.center))
+        # print ('The center of top tape is ' + str(top_tape.center))
+        # print ('The center is ' + str(center))
+        print ('The angle is ' + str(angle_deg))
+
+
+    # print Distance.focal_length(bottom_tape.radius,2,158)
+    # Finds horizontal distance
+
+    #Sends center over as a String array
     try:
         socket.send_targets(center[0], center[1], distance, angle)
     except Exception as e:
