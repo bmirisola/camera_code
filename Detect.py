@@ -1,9 +1,9 @@
 import math
-import numpy as np
 import os
 import time
 
 import cv2
+import numpy as np
 
 import Constants
 import Distance
@@ -16,16 +16,16 @@ vid = cv2.VideoCapture(Constants.camera_port)
 # delays camera startup
 time.sleep(1)
 
-#Runs shell script to start camera configuration
+# Runs shell script to start camera configuration
 os.system("scripts/configure.sh")
 
-#Creates socket object to send values over
+# Creates socket object to send values over
 socket = UDPCannon("10.0.11.67", 8090)
 
-#Tape contour array hold approximated polygons
+# Tape contour array hold approximated polygons
 tape_contour = []
 
-#Boolean for 2 polygons detected
+# Boolean for 2 polygons detected
 hasRun = False
 
 # hold midpoint of two tapes
@@ -35,6 +35,7 @@ center = []
 distance = 0
 meters = 0
 angle = 0
+
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -61,24 +62,24 @@ while (True):
     mask = cv2.inRange(hsv, lower_green, upper_green)
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
-    #finds contours
+    # finds contours
     im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    #Creates two polygon objects
+    # Creates two polygon objects
     top_tape = Polygon(frame, mask)
     bottom_tape = Polygon(frame, mask)
 
-    #Runs bottom tape when contours is > 1
-    if (len(contours) > 0):
+    # Runs bottom tape when contours is > 1
+    if len(contours) > 0:
         bottom_tape.run(contours[0])
 
-    #Runs top tape when contour count is > 2
-    if (len(contours) > 1):
+    # Runs top tape when contour count is > 2
+    if len(contours) > 1:
         top_tape.run(contours[1])
         hasRun = True
 
-    #Finds center is two objects are found
-    if (hasRun):
+    # Finds center is two objects are found
+    if hasRun:
         top_tape.center = list(top_tape.center)
         bottom_tape.center = list(bottom_tape.center)
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
@@ -95,25 +96,26 @@ while (True):
     print HorizontalDistance
     distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
     angle = math.atan2(Constants.boiler_height / distance)
-    #Sends center over as a String array
+
+    # Sends center over as a String array
     try:
-        socket.put("centerX", str(center) + '')
+        socket.send_targets(center[0], center[1], distance, angle)
     except Exception as e:
         print "Can't connect : {0}".format(e)
 
-    #Shows Frames
+    # Shows Frames
     cv2.imshow('orig', frame)
     # cv2.imshow('mask', mask)
     # cv2.imshow('res', res)
-    #cv2.imshow("hsv", hsv)
+    # cv2.imshow("hsv", hsv)
 
-    #Sets all values abck to default
+    # Sets all values abck to default
     hasRun = False
     bottom_tape.center = []
     top_tape.center = []
     center = []
 
-    #Waits for q key to interupt
+    # Waits for q key to interupt
     k = cv2.waitKey(20) & 0xFF
     if k == ord('q'):
         break
