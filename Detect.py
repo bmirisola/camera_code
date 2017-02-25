@@ -20,7 +20,7 @@ time.sleep(1)
 os.system("scripts/configure.sh")
 
 #Creates socket object to send values over
-socket = UDPCannon("10.0.11.67", 8090)
+socket = UDPCannon("10.0.11.74", 8090)
 
 #Tape contour array hold approximated polygons
 tape_contour = []

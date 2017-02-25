@@ -29,7 +29,7 @@ class Polygon:
         approx = cv2.approxPolyDP(contours, epsilon, True)
 
         #Add Polygons to tape contour if they are of point size 4 or greater
-        if len(approx) > 4:
+        if len(approx) > 2:
             self.tape_contour.append(approx)
 
         #draw all detected polygons
