@@ -59,7 +59,7 @@ upper_green = np.array([Constants.upper_blue, Constants.upper_green, Constants.u
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
 while (True):
     ret, frame = vid.read()
-    # frame = cv2.flip(frame,0)
+    frame = cv2.flip(frame, 0)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_green, upper_green)
     res = cv2.bitwise_and(frame, frame, mask=mask)
