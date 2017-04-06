@@ -32,8 +32,7 @@ hasRun = False
 # hold midpoint of two tapes
 center = []
 
-# holds distance value
-distance = 0
+# holds  value
 meters = 0
 angle_rads = 0
 angle_deg = 0
@@ -87,14 +86,13 @@ while (True):
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
-        HorizontalDistance = Distance.find_distance(ConstantsGear.focal_length, 4, bottom_tape.radius)
+        HorizontalDistance = Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)
         # print HorizontalDistance
-        angle_rads = math.atan(ConstantsGear.gear_peg_with_tape_length / distance)
-        angle_deg = math.degrees(angle_rads)
-        # print ('The center of bottom tape is ' + str(bottom_tape.center))
-        # print ('The center of top tape is ' + str(top_tape.center))
-        # print ('The center is ' + str(center))
+        if (HorizontalDistance != 0):
+            angle_rads = math.atan(ConstantsGear.gear_peg_with_tape_length / HorizontalDistance)
+            angle_deg = math.degrees(angle_rads)
         print ('The angle is ' + str(angle_deg))
+        print ('The distance is ' + str(Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)))
         print("The left tape center is: " + str(top_tape.center))
         print("The right tape center is: " + str(bottom_tape.center))
         print ('The center is:' + str(center))
@@ -111,15 +109,18 @@ while (True):
 
     # Shows Frames
     cv2.imshow('orig', frame)
-    # cv2.imshow('mask', mask)
+    cv2.imshow('mask', mask)
     # cv2.imshow('res', res)
-    # cv2.imshow("hsv", hsv)
+    cv2.imshow("hsv", hsv)
 
     # Sets all values back to default
     hasRun = False
     bottom_tape.center = []
     top_tape.center = []
     center = []
+    HorizontalDistance = 0
+    angle_rads = 0
+    angle_deg = 0
 
     # Waits for q key to interupt
     k = cv2.waitKey(20) & 0xFF
