@@ -5,6 +5,8 @@ import time
 
 import cv2
 
+import Constants
+import ConstantsGear
 import Distance
 from Polygon import Polygon
 from UDPCannon import UDPCannon
@@ -33,7 +35,8 @@ center = []
 # holds distance value
 distance = 0
 meters = 0
-angle = 0
+angle_rads = 0
+angle_deg = 0
 
 
 # detects double left click and stores the coordinates in px
@@ -84,15 +87,15 @@ while (True):
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
-        HorizontalDistance = Distance.find_distance(1659, 2, bottom_tape.radius)
+        HorizontalDistance = Distance.find_distance(ConstantsGear.focal_length, 4, bottom_tape.radius)
         # print HorizontalDistance
-        distance = math.sqrt(math.pow(HorizontalDistance, 2) + math.pow(Constants.boiler_height, 2))
-        angle_rads = math.atan(Constants.boiler_height / distance)
+        angle_rads = math.atan(ConstantsGear.gear_peg_with_tape_length / distance)
         angle_deg = math.degrees(angle_rads)
         # print ('The center of bottom tape is ' + str(bottom_tape.center))
         # print ('The center of top tape is ' + str(top_tape.center))
         # print ('The center is ' + str(center))
         print ('The angle is ' + str(angle_deg))
+        print ('The center is:' + str(center))
 
     # print Distance.focal_length(bottom_tape.radius,2,158)
     # Finds horizontal distance
