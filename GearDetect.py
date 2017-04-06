@@ -95,6 +95,8 @@ while (True):
         # print ('The center of top tape is ' + str(top_tape.center))
         # print ('The center is ' + str(center))
         print ('The angle is ' + str(angle_deg))
+        print("The left tape center is: " + str(top_tape.center))
+        print("The right tape center is: " + str(bottom_tape.center))
         print ('The center is:' + str(center))
 
     # print Distance.focal_length(bottom_tape.radius,2,158)
@@ -103,6 +105,7 @@ while (True):
     # Sends center over as a String array
     try:
         socket.put("centerX", str(center))
+        socket.put("angle", str(angle_deg))
     except Exception as e:
         print "Can't connect : {0}".format(e)
 
@@ -112,7 +115,7 @@ while (True):
     # cv2.imshow('res', res)
     # cv2.imshow("hsv", hsv)
 
-    # Sets all values abck to default
+    # Sets all values back to default
     hasRun = False
     bottom_tape.center = []
     top_tape.center = []

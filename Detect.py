@@ -110,7 +110,7 @@ while (True):
     # cv2.imshow('res', res)
     #cv2.imshow("hsv", hsv)
 
-    #Sets all values abck to default
+    # Sets all values back to default
     hasRun = False
     bottom_tape.center = []
     top_tape.center = []
