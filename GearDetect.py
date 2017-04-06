@@ -91,6 +91,7 @@ while (True):
         if (HorizontalDistance != 0):
             angle_rads = math.atan(ConstantsGear.gear_peg_with_tape_length / HorizontalDistance)
             angle_deg = math.degrees(angle_rads)
+            angle_deg = math.ceil(angle_deg)
         print ('The angle is ' + str(angle_deg))
         print ('The distance is ' + str(Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)))
         print("The left tape center is: " + str(top_tape.center))
