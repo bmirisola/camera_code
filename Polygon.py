@@ -39,7 +39,7 @@ class Polygon:
         for x in len(self.areas):
             if self.areas[x] > self.areas[x + 1]:
                 self.high = x
-
+                
         cv2.drawContours(self.frame, self.tape_contour[self.high], 0, (0, 0, 255), 2)
         cv2.circle(self.frame, self.center, self.radius, (0, 255, 0), 2)
 
