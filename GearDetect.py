@@ -37,6 +37,10 @@ meters = 0
 angle_rads = 0
 angle_deg = 0
 
+high = 0
+sec = 0
+tapes = [None] * 2
+
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -69,16 +73,24 @@ while (True):
     im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Creates two polygon objects
+    for c in range(0, len(contours)):
+        if (cv2.contourArea(contours[c]) > cv2.contourArea(contours[high])):
+            sec = high
+            high = c
+        elif (cv2.contourArea(contours[c]) > cv2.contourArea(contours[sec]) and cv2.contourArea(
+                contours[c]) <= cv2.contourArea(contours[high])):
+            sec = c
+
     top_tape = Polygon(frame, mask)
     bottom_tape = Polygon(frame, mask)
 
     # Runs bottom tape when contours is > 1
     if (len(contours) > 0):
-        bottom_tape.run(contours[0])
+        bottom_tape.run(contours[high])
 
     # Runs top tape when contour count is > 2
     if (len(contours) > 1):
-        top_tape.run(contours[1])
+        top_tape.run(contours[sec])
         hasRun = True
 
     # Finds center is two objects are found
@@ -99,16 +111,17 @@ while (True):
                 # print ('The angle is ' + str(angle_deg))
                 # print ('The distance is ' + str(Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)))
                 # print("The left tape center is: " + str(top_tape.center))
-                # print("The right tape center is: " + str(bottom_tape.center))
-                # print ('The center is:' + str(center))
+        print("The left tape center is: " + str(bottom_tape.center))
+
+        # print ('The center is:' + str(center))
 
     # print Distance.focal_length(bottom_tape.radius,2,158)
     # Finds horizontal distance
 
     # Sends center over as a String array
     try:
-        socket.put("centerX", str(center))
-        socket.put("angle", str(angle_deg))
+        print
+        # socket.send_targets(center[0],center[1],HorizontalDistance,str(angle_deg))
     except Exception as e:
         print "Can't connect : {0}".format(e)
 
@@ -126,6 +139,12 @@ while (True):
     HorizontalDistance = 0
     angle_rads = 0
     angle_deg = 0
+    bottom_tape.high = 0
+    top_tape.high = 0
+    bottom_tape.sec = 0
+    top_tape.sec = 0
+    high = 0
+    sec = 0
 
     # Waits for q key to interupt
     k = cv2.waitKey(20) & 0xFF

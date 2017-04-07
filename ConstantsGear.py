@@ -1,6 +1,6 @@
 low_blue = 55
 low_green = 250
-low_red = 35
+low_red = 60
 upper_blue = 65
 upper_green = 255
 upper_red = 65
