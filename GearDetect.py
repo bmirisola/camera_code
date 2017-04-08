@@ -100,15 +100,15 @@ while (True):
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
-        HorizontalDistance = Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)
-        # print HorizontalDistance
+        HorizontalDistance = Distance.find_distance(ConstantsGear.fake_focal, 4, bottom_tape.radius)
+        print HorizontalDistance
         if (HorizontalDistance != 0):
             angle_rads = math.atan(ConstantsGear.gear_peg_with_tape_length / HorizontalDistance)
             angle_deg = math.degrees(angle_rads)
             angle_deg = math.ceil(angle_deg)
             if (center[0] < 320):
                 angle_deg = -angle_deg
-                # print ('The angle is ' + str(angle_deg))
+                print ('The angle is ' + str(angle_deg))
                 # print ('The distance is ' + str(Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)))
                 # print("The left tape center is: " + str(top_tape.center))
         print("The left tape center is: " + str(bottom_tape.center))
@@ -121,7 +121,7 @@ while (True):
     # Sends center over as a String array
     try:
         print
-        # socket.send_targets(center[0],center[1],HorizontalDistance,str(angle_deg))
+        socket.send_targets(center[0], center[1], HorizontalDistance, str(angle_deg))
     except Exception as e:
         print "Can't connect : {0}".format(e)
 
