@@ -29,7 +29,7 @@ tape_contour = []
 # Boolean for 2 polygons detected
 hasRun = False
 
-# hold midpoint of two tapes
+# hold midpoint of two tapes3
 center = []
 
 # holds  value
@@ -108,10 +108,10 @@ while (True):
             angle_deg = math.ceil(angle_deg)
             if (center[0] < 320):
                 angle_deg = -angle_deg
-                print ('The angle is ' + str(angle_deg))
                 # print ('The distance is ' + str(Distance.find_distance(ConstantsGear.fake_focal, 4, top_tape.radius)))
                 # print("The left tape center is: " + str(top_tape.center))
         print("The left tape center is: " + str(bottom_tape.center))
+        print ('The angle is ' + str(angle_deg))
 
         # print ('The center is:' + str(center))
 
