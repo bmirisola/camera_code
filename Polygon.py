@@ -7,6 +7,9 @@ class Polygon:
     frame = None
     radius = 0
     center = []
+    tape = [None] * 2
+    high = 0
+    areas = []
 
     #Contstructor to make Polygon objects
     def __init__(self, frame, mask):
@@ -31,8 +34,18 @@ class Polygon:
         #Add Polygons to tape contour if they are of point size 4 or greater
         if len(approx) > 2:
             self.tape_contour.append(approx)
+            self.areas.append(cv2.contourArea(approx))
 
-        #draw all detected polygons
+            # for x in range(0,len(self.areas)):
+            # if self.areas[x] > self.areas[x + 1]:
+            # self.high = x
+            # if self.areas[x] <= self.areas[self.high] and self.areas[x] > self.areas[x+1]:
+            # self.sec = x
+
+        # cv2.drawContours(self.frame, self.tape_contour[self.high], 0, (0, 0, 255), 2)
+        #cv2.circle(self.frame, self.center, self.radius, (0, 255, 0), 2)
+
+        # draw all detected polygons
         if (len(self.tape_contour) > 0 and len(self.tape_contour) < 2):
             for x in range(0, len(self.tape_contour)):
                 cv2.drawContours(self.frame, self.tape_contour, 0, (0, 0, 255), 2)
