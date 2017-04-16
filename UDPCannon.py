@@ -18,11 +18,10 @@ class UDPCannon:
         self.client_port = client_port
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    def send_targets(self, center_x, center_y, distance, angle):
+    def send_target(self, angle):
         self.message = """
         ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        ||||||||||||||||||||||||||||[{0}~{1}~{2}~{3}]||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        ||||||||||||||||||||||||||||[{0}]||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        """.format(center_x, center_y, distance, angle)
-        # print "Packet size: " + str(sys.getsizeof(message))
+        """.format(angle)
         self.socket.sendto(str(self.message), (self.client_address, self.client_port))
