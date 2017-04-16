@@ -5,11 +5,11 @@ import time
 import cv2
 import numpy as np
 
-import Constants
-import Distance
 import Settings
-from Polygon import Polygon
-from UDPCannon import UDPCannon
+import util.Constants as Constants
+from util import Distance
+from util.Polygon import Polygon
+from util.UDPCannon import UDPCannon
 
 # Creates a video capture object
 # noinspection PyArgumentList
