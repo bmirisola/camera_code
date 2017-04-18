@@ -3,7 +3,7 @@ import socket
 
 class UDPCannon:
     """
-    UDPCannon application
+    UDP Socket sender
 
     :author Matt Turi (mturi@mort11.org)
     """
@@ -21,7 +21,7 @@ class UDPCannon:
     def send_target(self, angle):
         self.message = """
         ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-        ||||||||||||||||||||||||||||[{0}]||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        ||||||||||||||||||||||||||||{0}||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         """.format(angle)
         self.socket.sendto(str(self.message), (self.client_address, self.client_port))

@@ -45,15 +45,15 @@ tapes = [None] * 2
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
-def print_hsv_at_coord(event, x, y):
+def print_hsv_at_coord(event, x, y, empty, data):
     global hsv
     if event == cv2.EVENT_LBUTTONDBLCLK:
         print hsv[y, x]
 
 
 # Sets print_hsv_at_coord function frame titled 'orig'
-cv2.namedWindow('HSV')
-cv2.setMouseCallback('HSV', print_hsv_at_coord)
+cv2.namedWindow('hsv')
+cv2.setMouseCallback('hsv', print_hsv_at_coord)
 
 # Calibrated HSV Ranges
 # BGR
@@ -64,14 +64,14 @@ upper_green_thresh = np.array([Constants.upper_blue, Constants.upper_green, Cons
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
 while True:
     ret, frame = capture_source.read()
-    frame = cv2.flip(frame, 0)
+    # frame = cv2.flip(frame, 0)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_green_thresh, upper_green_thresh)
     res = cv2.bitwise_and(frame, frame, mask=mask)
     # res = cv2.flip(res,0)
 
     # finds contours
-    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, im2 = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Creates two polygon objects
     for c in range(0, len(contours)):
@@ -102,18 +102,16 @@ while True:
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
         horizontal_distance = Distance.find_distance(Constants.fake_focal, 4, bottom_tape.radius)
-        print horizontal_distance
         if horizontal_distance != 0:
             angle_rads = math.atan(Constants.gear_peg_with_tape_length / horizontal_distance)
             angle_deg = math.degrees(angle_rads)
             angle_deg = math.ceil(angle_deg)
             if center[0] < 320:
                 angle_deg = -angle_deg
-        print("The left tape center is: " + str(bottom_tape.center))
-        print ('The angle is ' + str(angle_deg))
+
+        print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
 
     try:
-        print
         socket.send_target(angle_deg)
     except Exception as e:
         print "Can't connect : {0}".format(e)

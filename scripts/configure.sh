@@ -1,4 +1,4 @@
-deviceId="1"
+deviceId="0"
 v4l2-ctl -d /dev/video${deviceId} --set-ctrl=brightness=0
 v4l2-ctl -d /dev/video${deviceId} --set-ctrl=saturation=255
 v4l2-ctl -d /dev/video${deviceId} --set-ctrl=contrast=0

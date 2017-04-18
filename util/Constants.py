@@ -8,4 +8,4 @@ focal_length = 607.648351648
 fake_focal = 418
 tape_width = 2
 gear_peg_with_tape_length = 10.25
-camera_port = 1
+camera_port = 0
