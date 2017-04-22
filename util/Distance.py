@@ -1,5 +1,5 @@
 # 11 3/8 inches 11.375 inches
-def find_focal_length(pixel, width, distance):
+def find_focal_length(distance, width,pixel):
     return (pixel * distance) / width
 
 

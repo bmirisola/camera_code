@@ -64,7 +64,7 @@ upper_green_thresh = np.array([Constants.upper_blue, Constants.upper_green, Cons
 # Creates two video windows. One from camera feed. Other blacks out everything not between calibrated BGR ranges
 while True:
     ret, frame = capture_source.read()
-    # frame = cv2.flip(frame, 0)
+    frame = cv2.flip(frame, 0)
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     mask = cv2.inRange(hsv, lower_green_thresh, upper_green_thresh)
     res = cv2.bitwise_and(frame, frame, mask=mask)
@@ -101,6 +101,8 @@ while True:
         center = int((top_tape.center[0] + bottom_tape.center[0]) / 2), int(
             (top_tape.center[1] + bottom_tape.center[1]) / 2)
         center = list(center)
+        #print " The focal length is: " + str(Distance.find_focal_length(50.25,4,bottom_tape.radius))
+        #print "the distance is: " + str(Distance.find_distance(402.0,4,bottom_tape.radius))
         horizontal_distance = Distance.find_distance(Constants.fake_focal, 4, bottom_tape.radius)
         if horizontal_distance != 0:
             angle_rads = math.atan(Constants.gear_peg_with_tape_length / horizontal_distance)
@@ -109,7 +111,7 @@ while True:
             if center[0] < 320:
                 angle_deg = -angle_deg
 
-        print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
+        #print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
 
     try:
         socket.send_target(angle_deg)
