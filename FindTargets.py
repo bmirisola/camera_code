@@ -22,7 +22,7 @@ time.sleep(1)
 os.system("scripts/configure.sh")
 
 # Creates socket object to send values over
-socket = UDPCannon("10.0.11.67", 8090)
+socket = UDPCannon("10.0.11.2", 8090)
 
 # Tape contour array hold approximated polygons
 tape_contour = []
@@ -71,7 +71,7 @@ while True:
     # res = cv2.flip(res,0)
 
     # finds contours
-    contours, im2 = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    im2, contours, heirarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Creates two polygon objects
     for c in range(0, len(contours)):
