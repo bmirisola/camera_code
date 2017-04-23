@@ -41,7 +41,7 @@ angle_deg = 0
 high = 0
 sec = 0
 tapes = [None] * 2
-
+gear_distance = 0
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -105,13 +105,16 @@ while True:
         #print "the distance is: " + str(Distance.find_distance(402.0,4,bottom_tape.radius))
         horizontal_distance = Distance.find_distance(Constants.fake_focal, 4, bottom_tape.radius)
         if horizontal_distance != 0:
-            angle_rads = math.atan(Constants.gear_peg_with_tape_length / horizontal_distance)
+            center_distance = math.fabs(bottom_tape.center[0]-center[0])
+            print "pixels = " + str(center_distance)
+            distance = (center_distance * Constants.gear_peg_with_tape_length_half)/Constants.distance_pixels
+            angle_rads = math.atan(distance / horizontal_distance)
             angle_deg = math.degrees(angle_rads)
             angle_deg = math.ceil(angle_deg)
             if center[0] < 320:
                 angle_deg = -angle_deg
 
-        #print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
+        print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
 
     try:
         socket.send_target(angle_deg)

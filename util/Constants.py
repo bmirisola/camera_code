@@ -1,6 +1,6 @@
 low_blue = 55
 low_green = 250
-low_red = 60
+low_red = 45
 upper_blue = 65
 upper_green = 255
 upper_red = 65
@@ -9,4 +9,5 @@ fake_focal = 402
 tape_width = 2
 gear_peg_with_tape_length = 10.25
 camera_port = 1
-gear_peg_with_tape_length_half = gear_peg_with_tape_length/2
+gear_peg_with_tape_length_half = 4.125
+distance_pixels = 125
