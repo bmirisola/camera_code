@@ -105,8 +105,7 @@ while True:
         #print "the distance is: " + str(Distance.find_distance(402.0,4,bottom_tape.radius))
         horizontal_distance = Distance.find_distance(Constants.fake_focal, 4, bottom_tape.radius)
         if horizontal_distance != 0:
-            center_distance = math.fabs(center[0]-640)
-            
+            center_distance = math.fabs(center[0]-320)
             print "pixels = " + str(center_distance)
             distance = (center_distance * Constants.gear_peg_with_tape_length_half)/Constants.distance_pixels
             print "distance: " + str(distance)
