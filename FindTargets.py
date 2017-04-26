@@ -40,8 +40,6 @@ angle_deg = 0
 
 high = 0
 sec = 0
-tapes = [None] * 2
-gear_distance = 0
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
