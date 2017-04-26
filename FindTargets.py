@@ -8,6 +8,7 @@ import numpy as np
 import Settings
 import util.Constants as Constants
 from util import Distance
+from util import record_video
 from util.Polygon import Polygon
 from util.UDPCannon import UDPCannon
 
@@ -38,8 +39,14 @@ meters = 0
 angle_rads = 0
 angle_deg = 0
 
+# indexes of second highest and highest contours in terms of area
 high = 0
 sec = 0
+
+file_object = open('videos/videos.txt', 'r+')
+fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+video_frame = cv2.VideoWriter(file_object.readline(2) + 'frame.avi',fourcc, 20.0, (640,480))
+video_hsv = cv2.VideoWriter(file_object.readline(4) + 'hsv.avi',fourcc, 20.0, (640,480))
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -115,6 +122,8 @@ while True:
 
         print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
 
+    video_frame.write(frame)
+    video_hsv.write(hsv)
     try:
         socket.send_target(angle_deg)
     except Exception as e:
@@ -153,3 +162,5 @@ while True:
 # Exits
 capture_source.release()  # Release camera object
 cv2.destroyAllWindows()  # Close all windows
+video_frame.release()
+video_hsv.release()
