@@ -8,7 +8,6 @@ import numpy as np
 import Settings
 import util.Constants as Constants
 from util import Distance
-from util import record_video
 from util.Polygon import Polygon
 from util.UDPCannon import UDPCannon
 
@@ -45,8 +44,8 @@ sec = 0
 
 file_object = open('videos/videos.txt', 'r+')
 fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-video_frame = cv2.VideoWriter(file_object.readline(2) + 'frame.avi',fourcc, 20.0, (640,480))
-video_hsv = cv2.VideoWriter(file_object.readline(4) + 'hsv.avi',fourcc, 20.0, (640,480))
+video_frame = cv2.VideoWriter(str(file_object.readline(1)) + 'frame.avi',fourcc, 20.0, (640,480))
+video_hsv = cv2.VideoWriter(str(file_object.readline(1)) + 'hsv.avi',fourcc, 20.0, (640,480))
 
 # detects double left click and stores the coordinates in px
 # This is for calibrating pixel values of retro tape so that everything can be blocked out
@@ -160,7 +159,7 @@ while True:
             break
 
 # Exits
-capture_source.release()  # Release camera object
-cv2.destroyAllWindows()  # Close all windows
 video_frame.release()
 video_hsv.release()
+capture_source.release()  # Release camera object
+cv2.destroyAllWindows()  # Close all windows
