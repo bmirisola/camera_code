@@ -1,9 +1,9 @@
-low_blue = 55
-low_green = 250
-low_red = 45
-upper_blue = 65
-upper_green = 255
-upper_red = 70
+low_blue = 85
+low_green = 0
+low_red = 250
+upper_blue = 95
+upper_green = 5
+upper_red = 255
 focal_length = 607.648351648
 fake_focal = 380.625
 tape_width = 2

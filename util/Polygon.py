@@ -1,6 +1,5 @@
 import cv2
 
-
 class Polygon:
     # parameters for contours and polygons
     tape_contour = []
