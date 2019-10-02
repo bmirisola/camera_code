@@ -57,7 +57,7 @@ fourcc = cv2.VideoWriter_fourcc(*'MJPG')
 def print_hsv_at_coord(event, x, y, empty, data):
     global hsv
     if event == cv2.EVENT_LBUTTONDBLCLK:
-        print hsv[y, x]
+        print (hsv[y, x])
 
 
 # Sets print_hsv_at_coord function frame titled 'orig'
@@ -124,14 +124,14 @@ while True:
             if center[0] < 320:
                 angle_deg = -angle_deg
 
-        print 'Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance)
+        print ('Angle {0} | H. Distance {1}'.format(angle_deg, horizontal_distance))
 
     #video_frame.write(frame)
     #video_hsv.write(hsv)
     try:
         socket.send_target(angle_deg)
     except Exception as e:
-        print "Can't connect : {0}".format(e)
+        print( "Can't connect : {0}".format(e))
 
     # Display windows if not in production mode
     if not Settings.PRODUCTION_MODE:
